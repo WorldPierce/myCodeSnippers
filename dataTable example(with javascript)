@@ -1,0 +1,51 @@
+var exportButtons = ['excel', 'csv', 'pdf', 'print'];
+	var tableFormat = "<'row'<'col-md-4'l><'col-md-4'B><'col-md-4'f>><'row'<'col-md-12't>><'row'<'col-md-3'i><'col-md-2'r><'col-md-7'p>>";
+	var cmrjSearchResultsSel = $("#cmrj_results");
+	var table = cmrjSearchResultsSel.DataTable({
+        dom: tableFormat,
+     // Plugin which removes pagination links when there is only one page of results
+        "conditionalPaging": true,
+        buttons: exportButtons
+    });
+
+    <div class="flextable">
+		    	<c:set var="formUrl"><c:url value='/caseManagement/cmrj/update.html'/></c:set>
+		    	<form:form method="post" modelAttribute="cmrjForm" id="frm" action="${formUrl}">
+		        <table id="cmrj_results" class="table display dataTable fixed">
+		            <thead>
+			            <tr>
+			            	<th>Case Number</th>
+			                <th>Area</th>
+			                <th>Error Message</th>
+			                <th>Reject Date</th>
+			                <th style="text-align: center">Revit Flag</th>		                
+			            </tr>
+		            </thead>	           
+	                
+		            <tbody style="cursor: pointer;">	           
+		            <c:forEach items="${cmrjForm.listOf295}" var="data" varStatus="status">
+	                                <tr>
+	                                	<td>${data.caseHudOfficeP}-${data.caseNum}</td>
+	                                    <td><c:out value="${data.currentHudOffice}"/></td>
+	                                    <td><c:out value="${data.errorMessage}"/></td>
+	                                    <fmt:parseDate value="${data.rejectDate}" pattern="yyyy-mm-dd" var="myDate"/>
+	                                    <td><fmt:formatDate value="${myDate}" pattern="mm/DD/YYYY"/></td>
+	                                    <%-- <td><c:out value="${data.rejectDate}"/></td> --%>
+	                                    <td>
+	                                    	<form:select path="revitFlag[${status.index}]" class='form-control revitFlag'>
+			        							<form:option value=" " label="--None Selected--"></form:option>
+			        							<form:option value=" " label=" "></form:option>
+			        							<form:option value="Y" label="Y"></form:option>
+			        							<form:option value="N" label="N"></form:option>
+			        						</form:select>
+			        					</td>
+			        				</tr>            
+		            </c:forEach>	            
+		            </tbody>	           
+		        </table>
+		        <button type="button" class="btn btn-warning floatR cmrjBtnMargin" id="cmrjCancelBtn">Cancel</button>
+		   		<button type="button" class="btn btn-default floatR cmrjBtnMargin" id="cmrjResetBtn">Reset</button>
+		        <button type="submit" id = "cmrjResolveBtn" class="btn btn-success floatR cmrjBtnMargin">Save&nbsp;&nbsp;<span class="badge badge-pill">0</span></button>	        
+		   		</form:form>
+		   			        
+		    </div>

@@ -1,0 +1,59 @@
+			<c:if test="${error != null && error != ''}">
+	                <div class="alert alert-danger">
+	                    <strong>${error}</strong>
+	                </div>
+	        </c:if>
+	        <c:if test="${success != null && success != ''}">
+	                <div class="alert alert-success">
+	                    <strong>${success}</strong>
+	                </div>
+	        </c:if>
+
+@RequestParam(required=false) String success
+
+
+
+
+@RequestMapping("/cmrjUMode")
+    public String cmrjUMode(Model model, HttpServletRequest request, @RequestParam(required=false) String success) {
+    	List<A8spt295> list295 = caseManager.loadCmrj((String)request.getSession().getAttribute(USER_HUD_OFFICE_REQUEST_ATTRIBUTE));
+    	List<A8spt157> list157 = caseManager.loadCmrj157(list295);
+
+    	model.addAttribute("cmrjForm", new CMRJObject(list295,list157));
+    	model.addAttribute("success", success);
+    	return "/caseManagement/cmrj";
+    }
+    
+    @RequestMapping("/cmrjQMode")
+    public String cmrjQMode(Model model, HttpServletRequest request) {
+    	List<A8spt295> list295 = caseManager.loadCmrj("HQ");
+    	List<A8spt157> list157 = caseManager.loadCmrj157(list295);
+    	model.addAttribute("cmrjForm", new CMRJObject(list295,list157));
+    	return "/caseManagement/cmrjQ";
+    }
+
+
+
+    @RequestMapping("/cmrj/update")
+    public String cmrjUpdate(@ModelAttribute(value = "cmrjForm") CMRJObject cmrjFormObj, BindingResult result, SessionStatus status, 
+    					   HttpServletRequest request, HttpServletResponse response, Model model) {
+    	cmrjFormObj.setUpdatedBy((String)request.getSession().getAttribute(NaidConstants.SESSION_LOGGED_IN_USER));
+    	try {
+    		caseManager.updateCmrj(cmrjFormObj);
+    		int numUpdated = cmrjFormObj.getRevitFlag().stream()
+    												   .filter(e -> !e.equals(" "))
+    												   .collect(Collectors.toList())
+    												   .size();
+    		//model.addAttribute("success", numUpdated +" case(s) have been successfully updated.");
+    		if(numUpdated == 1) {
+    			return "redirect:/caseManagement/cmrjUMode.html?success=" + numUpdated +" Case has been successfully updated.";
+    		} else {
+    			return "redirect:/caseManagement/cmrjUMode.html?success=" + numUpdated +" Cases have been successfully updated.";
+    		}
+    		
+    	} catch (Exception e) {
+			log.error(e);
+			model.addAttribute("error", "There was an error while attempting to update the records.");
+			return "/caseManagement/cmrj";
+		}	
+    }

@@ -1,0 +1,31 @@
+var table = cmrjSearchResultsSel.DataTable({
+        dom: tableFormat,
+     // Plugin which removes pagination links when there is only one page of results
+        "conditionalPaging": true,
+        buttons: [
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            }
+        ]
+    });

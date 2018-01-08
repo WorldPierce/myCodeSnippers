@@ -1,0 +1,11 @@
+<c:set var="myAddr" value="${cmrjForm.listOf157[status.index].address1}, "/> 
+<c:choose>
+    <c:when test="${cmrjForm.listOf157[status.index].city2 != ''}">
+        <c:set var="myAddr" value="${myAddr}${cmrjForm.listOf157[status.index].city2}, "/> 
+    </c:when>    
+    <c:otherwise>
+        <c:set var="myAddr" value="${myAddr}${cmrjForm.listOf157[status.index].city}, "/> 
+    </c:otherwise>
+</c:choose> 
+<c:set var="myAddr" value="${myAddr}${cmrjForm.listOf157[status.index].stateCode} ${cmrjForm.listOf157[status.index].displayZipCode}"/> 
+<c:out value="${myAddr}"/>

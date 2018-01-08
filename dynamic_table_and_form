@@ -1,0 +1,72 @@
+<c:set var="formUrl"><c:url value='/caseManagement/cmrj/update.html'/></c:set>
+	    	<form:form method="post" modelAttribute="cmrjForm" id="frm" action="${formUrl}">
+	        <table id="cmrj_results" class="table display dataTable fixed">
+	            <thead>
+		            <tr>
+		            	<th>Case Number</th>
+		                <th>Area</th>
+		                <th>Error Message</th>
+		                <th>Reject Date</th>
+		                <th style="text-align: center">Revit Flag</th>
+		                
+		            </tr>
+	            </thead>	           
+                
+	            <tbody style="cursor: pointer;">	           
+	            <c:forEach items="${cmrjForm.listOf295}" var="data" varStatus="status">
+                                <tr>
+                                	<td>${data.caseHudOfficeP}-${data.caseNum}</td>
+                                    <td><c:out value="${data.currentHudOffice}"/></td>
+                                    <td><c:out value="${data.errorMessage}"/></td>
+                                    <td><c:out value="${data.rejectDate}"/></td>
+                                    <td>
+                                    	<form:select path="revitFlag[${status.index}]" class='form-control revitFlag'>
+		        							<form:option value=" " label="--Select Flags to Set--"></form:option>
+		        							<form:option value="Y" label="Y"></form:option>
+		        							<form:option value="N" label="N"></form:option>
+		        						</form:select>
+		        					</td>
+		        				</tr>            
+	            </c:forEach>	            
+	            </tbody>	           
+	        </table>
+	        <input type="submit" id = "cmrjResolveBtn" class="btn btn-success" value="Resolve Seleceted" /><span class="badge badge-pill">0</span>
+	        
+	   		</form:form>
+
+		#################### Multiple arrays with acces through index ######################################
+	   		<c:forEach items="${cmrjForm.listOf295}" var="data" varStatus="status">
+	                                <tr>
+	                                	<td>${data.caseHudOfficeP}-${data.caseNum}</td>
+	                                	<%-- <c:set var="listOf157">${cmrjForm.listOf157[${status.index}]}</c:set> --%>
+	                                	<td><c:out value="${cmrjForm.listOf157[status.index].address1}"/></td>
+	                                	<td style="text-align: center"><c:out value="${cmrjForm.listOf157[status.index].caseStepNumber}"/></td>
+	                                	<c:catch var="dateException">
+                                            <fmt:parseDate var="stepDate" value="${cmrjForm.listOf157[status.index].date1}" pattern="yyyy-MM-dd"/>
+                                            <c:set var="stepDate"><fmt:formatDate pattern="MM/dd/yyyy"  value="${stepDate}"/></c:set>
+                                        </c:catch>
+                                        <c:if test="${not empty dateException}">
+                                            <c:set var="rejectDate" value="${cmrjForm.listOf157[status.index].date1}"/>
+                                        </c:if>
+	                                	<td><c:out value="${stepDate}"/></td>
+	                                    <td><c:out value="${data.currentHudOffice}"/></td>
+	                                    <td><c:out value="${data.errorMessage}"/></td>
+	                                    <c:catch var="dateException">
+                                            <fmt:parseDate var="rejectDate" value="${data.rejectDate}" pattern="yyyy-MM-dd"/>
+                                            <c:set var="rejectDate"><fmt:formatDate pattern="MM/dd/yyyy"  value="${rejectDate}"/></c:set>
+                                        </c:catch>
+                                        <c:if test="${not empty dateException}">
+                                            <c:set var="rejectDate" value="${data.rejectDate}"/>
+                                        </c:if>
+	                                   <%--  <fmt:parseDate value="${data.rejectDate}" pattern="yyyy-mm-dd" var="myDate"/> --%>
+	                                    <td>${rejectDate}</td>
+	                                    <td>
+	                                    	<form:select path="revitFlag[${status.index}]" class='form-control revitFlag'>
+			        							<form:option value=" " label="--None Selected--"></form:option>
+			        							<form:option value=" " label=" "></form:option>
+			        							<form:option value="Y" label="Y"></form:option>
+			        							<form:option value="N" label="N"></form:option>
+			        						</form:select>
+			        					</td>
+			        				</tr>            
+		            </c:forEach>

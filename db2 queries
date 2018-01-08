@@ -1,0 +1,20 @@
+
+
+Select distinct(name),tbname, ColType, Length, colno, scale from Sysibm.syscolumns where tbname = 'A8SPT248' order by colno;
+
+
+select CASE_HUD_OFFICE__P, CASE_STEP_NUMBER, ACTIVE_INVENTORY_F from A8ST001.A8SPT157 where CASE_NUM = '317675';
+
+select CASE_HUD_OFFICE__P, CASE_STEP_NUMBER from A8ST001.A8SPT157 where CASE_NUM = '317675' and CASE_STEP_NUMBER = 9;
+
+# DB2 Replica
+sams.database.name=db2mimic
+sams.database.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+sams.database.url=jdbc:sqlserver://samsdbserver.database.windows.net;databaseName=db2mimic
+sams.database.user=samsadmin
+sams.database.password=n47wj19x!9
+sams.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+sams.hibernate.default_schema=NAIDADMIN
+
+
+select TITLE_ID from A8ST001.A8SPT190 WHERE NULLIF(TITLE_ID, '') IS NOT NULL

@@ -1,0 +1,4 @@
+select name, tbname, coltype, length, scale, colno
+from sysibm.syscolumns
+where tbname in ('A8SPT123')
+and tbcreator = 'A8ST001' order by tbname, colno

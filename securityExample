@@ -1,0 +1,42 @@
+<c:set var="cmrjuFlag">${sessionScope.userPermissions.get(permissions['CMRJ_UMODE'].id()) != null ? 'true' : 'false'}</c:set>
+
+<c:if test="${cmrjuFlag == 'true'}">
+		        	<span>
+		        		<a href="<c:url value='/caseManagement/cmrjUMode.html'/>" type="button" class="btn btn-success" id="" style="position: relative; margin-bottom: .2em;">U Mode</a>
+		        	</span>
+		        </c:if>
+
+***********SecurityManager.java************
+protected static final List<String> CMRJ_UMODE_URLS = Arrays.asList(
+    		"/caseManagement/cmrjUMode.html",
+    		"/caseManagement/cmrjQMode.html",
+    		"/caseManagement/cmrj/load.html",
+    		"/caseManagement/cmrj/update.html");
+protected static final List<String> CMRJ_QMODE_URLS = Arrays.asList(
+    		"/caseManagement/cmrjQMode.html",
+    		"/caseManagement/cmrj/load.html");
+
+CMRJ_QMODE(144, CMRJ_QMODE_URLS),      //144 is ID given in securityTable
+ CMRJ_UMODE(145, CMRJ_UMODE_URLS)
+
+**************NaidInterceptor.java**************
+ if (requestUrl.startsWith("/caseManagement/")) {
+                        if (SecurityManager.QUERY_CMC0_URLS.contains(requestUrl)) {
+                            if (permissions == null || permissions.get(PERMISSION.QUERY_CMC0.id()) == null) {
+                                returnValue = false;
+                            }
+                        } else if (SecurityManager.ADMIN_CMC0_URLS.contains(requestUrl)) {
+                            if (permissions == null || permissions.get(PERMISSION.ADMIN_CMC0.id()) == null) {
+                                returnValue = false;
+                            }
+             ......................................
+                            }
+                        } else if (SecurityManager.CMRJ_QMODE_URLS.contains(requestUrl)) {
+                            if (permissions == null || permissions.get(PERMISSION.CMRJ_QMODE.id()) == null) {
+                                returnValue = false;
+                            }
+                        } else if (SecurityManager.CMRJ_UMODE_URLS.contains(requestUrl)) {
+                            if (permissions == null || permissions.get(PERMISSION.CMRJ_UMODE.id()) == null) {
+                                returnValue = false;
+                            }
+                        }
