@@ -1,0 +1,7 @@
+my changes
+
+make home screen look better with minimal effort
+.thumbnail {
+    border: 1px solid #425563;
+    box-shadow: 0 8px 6px -6px black;
+   }
